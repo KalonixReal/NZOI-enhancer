@@ -1,5 +1,5 @@
 
-# NZOI Enhancer
+# NZOI (New Zealand Olympiad Informatics) Enhancer Userscript
 
 ## Important
 
