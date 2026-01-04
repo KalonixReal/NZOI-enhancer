@@ -32,12 +32,9 @@
 ### 1. Userscript
 
 1. Install **Tampermonkey** (Chrome / Edge / Firefox)
-2. Open and install:
-
-   ```
-   https://raw.githubusercontent.com/KalonixReal/NZOI-enhancer/main/combined_ide+dashboard.user.js
-   ```
-3. Go to `https://train.nzoi.org.nz/problems/*`
+2. Press on the file in the repo
+3. Press 'raw'
+4. Go to `https://train.nzoi.org.nz/` to see the effect!
 
 ---
 
