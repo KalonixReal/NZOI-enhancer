@@ -1,11 +1,11 @@
 
 # NZOI Enhancer
+
 ## Important
 
 *THIS TOOL IS MADE FOR C++ USERS
-*YOU MUST COPY THE CODE IN YOUR IDE AND THEN PRESS PASTE TO SAVE THE CODE
 
-A **single-file userscript** that upgrades the NZOI training site with a **IDE** and an improved **problem dashboard**.
+*YOU MUST COPY THE CODE IN YOUR IDE AND THEN PRESS PASTE TO SAVE THE CODE
 
 ## Features
 
