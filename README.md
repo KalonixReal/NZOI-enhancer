@@ -70,7 +70,7 @@ Make sure ModHeader is **enabled** before loading the NZOI site.
 * Code is saved per problem
 * **Run** → executes sample tests
 * **Submit** → submits to NZOI judge
-* **Files** → manage saved code
+* **Codes** → manage saved code
 
 ### Dashboard
 
