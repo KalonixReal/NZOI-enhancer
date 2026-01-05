@@ -4,6 +4,8 @@
 // @version      1.0
 // @description  Combines NZOI Lite IDE and Professional Dashboard
 // @match        https://train.nzoi.org.nz/*
+// @updateURL    https://raw.githubusercontent.com/KalonixReal/NZOI-enhancer/main/combined_ide+dashboard.user.js
+// @downloadURL  https://raw.githubusercontent.com/KalonixReal/NZOI-enhancer/main/combined_ide+dashboard.user.js
 // @grant        GM_addStyle
 // @grant        GM_setValue
 // @grant        GM_getValue
