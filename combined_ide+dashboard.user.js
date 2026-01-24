@@ -1,11 +1,9 @@
 // ==UserScript==
-// @name         NZOI Unified Platform distribute
+// @name         NZOI Unified Platform
 // @namespace    http://tampermonkey.net/
-// @version      1.0
-// @description  Combines NZOI Lite IDE and Professional Dashboard
+// @version      1.1
+// @description  Combines NZOI Lite IDE and Professional Dashboard 
 // @match        https://train.nzoi.org.nz/*
-// @updateURL    https://raw.githubusercontent.com/KalonixReal/NZOI-enhancer/main/combined_ide+dashboard.user.js
-// @downloadURL  https://raw.githubusercontent.com/KalonixReal/NZOI-enhancer/main/combined_ide+dashboard.user.js
 // @grant        GM_addStyle
 // @grant        GM_setValue
 // @grant        GM_getValue
@@ -19,7 +17,15 @@
 "use strict";
 if(!window.location.pathname.match(/\/problems\/[^\/]+/)) return;
 
-GM_addStyle(`:root{--bg0:#121212;--bg1:#1e1e1e;--bg2:#252526;--border:#333;--border-light:#444;--fg0:#e0e0e0;--fg-muted:#999;--accent:#0a84ff;--green:#2ecc71;--red:#e06c75}body,html{background-color:var(--bg0)!important;color:var(--fg0)!important;font-family:'Segoe UI',sans-serif!important}#main-container,.problem-description{background:var(--bg0)!important;color:var(--fg0)!important}#main-page-title-box,.ui.segment,.ui.breadcrumb,.ui.container{background:transparent!important;box-shadow:none!important;border:none!important;padding:10px 0!important;margin:0!important}.ui.breadcrumb a{color:var(--fg-muted)!important}.ui.breadcrumb .divider{color:var(--border)!important}.ui.header .sub.header,h1,h2,h3,h4,h5,.ui.header{color:var(--fg0)!important}a{color:var(--fg0);text-decoration:none;transition:color .2s}a:hover{color:var(--accent)}.problem-description pre,.problem-description code,.samples pre,.highlight{background:var(--bg1)!important;color:var(--fg0)!important;border:1px solid var(--border)!important;border-radius:4px!important}.problem-description table,table,td,th{background:var(--bg1)!important;color:var(--fg0)!important;border-color:var(--border)!important}.samples{border:1px solid var(--border)!important}.samples li{background:var(--bg2)!important;border-color:var(--border)!important}#nzoi-layout{display:flex;height:100vh;overflow:hidden;background:var(--bg0)}#main-container{width:50%;overflow-y:auto;padding:20px;box-sizing:border-box;border-right:1px solid var(--border)}#nzoi-resizer{width:6px;cursor:col-resize;background:var(--bg1);border-left:1px solid var(--border);border-right:1px solid var(--border);flex-shrink:0}#nzoi-resizer:hover{background:var(--accent)}#nzoi-sidebar{width:50%;background:var(--bg1);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}.sidebar-content{height:100%;display:flex;flex-direction:column;padding:10px;box-sizing:border-box}.editor-controls{margin-bottom:10px;display:flex;justify-content:flex-end;gap:8px}button{border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold}#run-btn{background:#4263eb;color:#fff}#submit-btn{background:var(--green);color:#fff}#paste-btn,#files-btn{background:var(--bg2);color:var(--fg0);border:1px solid var(--border)}#editor-container{flex:1;border:1px solid var(--border);border-radius:4px;overflow:hidden;min-height:200px}#clangd-iframe{width:100%;height:100%;border:none}#editor-vertical-resizer{height:8px;background:var(--bg1);cursor:row-resize;display:flex;justify-content:center;align-items:center}#editor-vertical-resizer::after{content:'...';color:var(--border-light);line-height:5px}#test-results-container{height:30%;background:var(--bg1);border-top:1px solid var(--border);display:flex;flex-direction:column}#test-results{padding:10px;overflow-y:auto;flex:1;background:var(--bg1)}.test-result{margin-bottom:8px;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg2)}.test-header{padding:8px;background:var(--bg2);display:flex;justify-content:space-between;font-size:13px;font-weight:bold}.test-header.passed{color:var(--green)}.test-header.failed{color:var(--red)}.test-diff{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;background:var(--bg1)}.test-box{background:var(--bg1);padding:10px;border-radius:4px}.test-box strong{color:var(--fg0);display:block;margin-bottom:5px}.test-box pre{margin:0;white-space:pre-wrap;font-family:monospace;font-size:12px;color:var(--fg0);background:var(--bg0)!important;padding:8px;border-radius:4px}.nzoi-modal{position:fixed;z-index:10000;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;justify-content:center;align-items:center}.nzoi-modal-content{background:var(--bg1);width:80%;max-width:600px;border-radius:8px;border:1px solid var(--border);display:flex;flex-direction:column;max-height:80vh}.nzoi-modal-header{padding:15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.nzoi-modal-body{padding:15px;overflow-y:auto;flex:1}.nzoi-modal-footer{padding:15px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}.nzoi-file-item{padding:10px;border:1px solid var(--border);margin-bottom:5px;border-radius:4px;background:var(--bg2);display:flex;justify-content:space-between;align-items:center}.nzoi-file-editor{width:100%;height:300px;background:var(--bg0);color:var(--fg0);border:1px solid var(--border);padding:10px;font-family:monospace}.nzoi-btn{border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:13px}.nzoi-btn-primary{background:var(--accent);color:#fff}.nzoi-btn-secondary{background:var(--bg2);color:var(--fg0);border:1px solid var(--border)}.nzoi-btn-danger{background:var(--red);color:#fff}.nzoi-btn-small{padding:4px 8px;font-size:12px}.nzoi-file-info{flex:1}.nzoi-file-name{font-weight:bold;margin-bottom:2px}.nzoi-file-meta{font-size:11px;color:var(--fg-muted)}.nzoi-file-actions{display:flex;gap:5px}.nzoi-modal-close{background:none;border:none;color:var(--fg-muted);font-size:24px;cursor:pointer;padding:0;width:24px;height:24px}.nzoi-empty-state{color:var(--fg-muted);text-align:center;padding:20px}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:6px;border:2px solid var(--bg0)}::-webkit-scrollbar-thumb:hover{background:var(--border-light)}`);
+GM_addStyle(`:root{--bg0:#121212;--bg1:#1e1e1e;--bg2:#252526;--border:#333;--border-light:#444;--fg0:#e0e0e0;--fg-muted:#999;--accent:#0a84ff;--green:#2ecc71;--red:#e06c75}pre, code, kbd, samp, .highlight pre, .ui.segment pre, .problem-statement pre {
+    background-color: var(--bg1) !important;
+    color: var(--fg0) !important;
+    border: 1px solid var(--border) !important;
+    padding: 10px !important;
+    border-radius: 4px !important;
+    overflow-x: auto !important;
+    white-space: pre-wrap !important; /* Ensures text doesn't overflow horizontally */
+}body,html{background-color:var(--bg0)!important;color:var(--fg0)!important;font-family:'Segoe UI',sans-serif!important}#main-container,.problem-description{background:var(--bg0)!important;color:var(--fg0)!important}#main-page-title-box,.ui.segment,.ui.breadcrumb,.ui.container{background:transparent!important;box-shadow:none!important;border:none!important;padding:10px 0!important;margin:0!important}.ui.breadcrumb a{color:var(--fg-muted)!important}.ui.breadcrumb .divider{color:var(--border)!important}.ui.header .sub.header,h1,h2,h3,h4,h5,.ui.header{color:var(--fg0)!important}a{color:var(--fg0);text-decoration:none;transition:color .2s}a:hover{color:var(--accent)}.problem-description pre,.problem-description code,.samples pre,.highlight{background:var(--bg1)!important;color:var(--fg0)!important;border:1px solid var(--border)!important;border-radius:4px!important}.problem-description table,table,td,th{background:var(--bg1)!important;color:var(--fg0)!important;border-color:var(--border)!important}.samples{border:1px solid var(--border)!important}.samples li{background:var(--bg2)!important;border-color:var(--border)!important}#nzoi-layout{display:flex;height:100vh;overflow:hidden;background:var(--bg0)}#main-container{width:50%;overflow-y:auto;padding:20px;box-sizing:border-box;border-right:1px solid var(--border)}#nzoi-resizer{width:6px;cursor:col-resize;background:var(--bg1);border-left:1px solid var(--border);border-right:1px solid var(--border);flex-shrink:0}#nzoi-resizer:hover{background:var(--accent)}#nzoi-sidebar{width:50%;background:var(--bg1);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}.sidebar-content{height:100%;display:flex;flex-direction:column;padding:10px;box-sizing:border-box}.editor-controls{margin-bottom:10px;display:flex;justify-content:flex-end;gap:8px}button{border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold}#run-btn{background:#4263eb;color:#fff}#submit-btn{background:var(--green);color:#fff}#paste-btn,#files-btn{background:var(--bg2);color:var(--fg0);border:1px solid var(--border)}#editor-container{flex:1;border:1px solid var(--border);border-radius:4px;overflow:hidden;min-height:200px}#clangd-iframe{width:100%;height:100%;border:none}#editor-vertical-resizer{height:8px;background:var(--bg1);cursor:row-resize;display:flex;justify-content:center;align-items:center}#editor-vertical-resizer::after{content:'...';color:var(--border-light);line-height:5px}#test-results-container{height:30%;background:var(--bg1);border-top:1px solid var(--border);display:flex;flex-direction:column}#test-results{padding:10px;overflow-y:auto;flex:1;background:var(--bg1)}.test-result{margin-bottom:8px;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg2)}.test-header{padding:8px;background:var(--bg2);display:flex;justify-content:space-between;font-size:13px;font-weight:bold}.test-header.passed{color:var(--green)}.test-header.failed{color:var(--red)}.test-diff{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;background:var(--bg1)}.test-box{background:var(--bg1);padding:10px;border-radius:4px}.test-box strong{color:var(--fg0);display:block;margin-bottom:5px}.test-box pre{margin:0;white-space:pre-wrap;font-family:monospace;font-size:12px;color:var(--fg0);background:var(--bg0)!important;padding:8px;border-radius:4px}.nzoi-modal{position:fixed;z-index:10000;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;justify-content:center;align-items:center}.nzoi-modal-content{background:var(--bg1);width:80%;max-width:600px;border-radius:8px;border:1px solid var(--border);display:flex;flex-direction:column;max-height:80vh}.nzoi-modal-header{padding:15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.nzoi-modal-body{padding:15px;overflow-y:auto;flex:1}.nzoi-modal-footer{padding:15px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}.nzoi-file-item{padding:10px;border:1px solid var(--border);margin-bottom:5px;border-radius:4px;background:var(--bg2);display:flex;justify-content:space-between;align-items:center}.nzoi-file-editor{width:100%;height:300px;background:var(--bg0);color:var(--fg0);border:1px solid var(--border);padding:10px;font-family:monospace}.nzoi-btn{border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:13px}.nzoi-btn-primary{background:var(--accent);color:#fff}.nzoi-btn-secondary{background:var(--bg2);color:var(--fg0);border:1px solid var(--border)}.nzoi-btn-danger{background:var(--red);color:#fff}.nzoi-btn-small{padding:4px 8px;font-size:12px}.nzoi-file-info{flex:1}.nzoi-file-name{font-weight:bold;margin-bottom:2px}.nzoi-file-meta{font-size:11px;color:var(--fg-muted)}.nzoi-file-actions{display:flex;gap:5px}.nzoi-modal-close{background:none;border:none;color:var(--fg-muted);font-size:24px;cursor:pointer;padding:0;width:24px;height:24px}.nzoi-empty-state{color:var(--fg-muted);text-align:center;padding:20px}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:6px;border:2px solid var(--bg0)}::-webkit-scrollbar-thumb:hover{background:var(--border-light)}`);
 
 await(async()=>{if(window.crossOriginIsolated)return true;if(!('serviceWorker'in navigator))return false;const reg=await navigator.serviceWorker.getRegistration();if(reg)return true;const sw=`self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).then(r=>{const h=new Headers(r.headers);h.set('Cross-Origin-Embedder-Policy','credentialless');h.set('Cross-Origin-Opener-Policy','same-origin');return new Response(r.body,{status:r.status,statusText:r.statusText,headers:h})}).catch(()=>fetch(e.request)))});`;try{await navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'})));window.location.reload()}catch{return false}})();
 
@@ -51,37 +57,53 @@ function setupV(r,top,bot){let sy,sh;r.onmousedown=e=>{sy=e.clientY;sh=top.getBo
 const samples=[];
 document.querySelectorAll('ul.samples li').forEach((item,i)=>{const inp=item.querySelector('.input pre');const out=item.querySelector('.output pre');if(inp&&out)samples.push({id:i+1,input:inp.textContent,output:out.textContent})});
 
+let __rt_running=false;
+
 async function runTests(ed){
+    if(__rt_running) return;
+    __rt_running=true;
+
     const c=ed.getValue();
     const r=document.getElementById('test-results');
     r.innerHTML='<div style="padding:10px;color:var(--accent);">Compiling & Running...</div>';
-    const results = await Promise.all(samples.map(async (s) => {
-        try {
-            const res = await fetch('https://emkc.org/api/v2/piston/execute', {
-                method: 'POST',
-                headers: {'Content-Type': 'application/json'},
-                body: JSON.stringify({language: 'c++', version: '10.2.0', files: [{content: c}], stdin: s.input.trim()})
-            }).then(r => r.json());
-            const out = (res.run ? (res.run.stdout || '') + (res.run.stderr || '') : (res.compile ? res.compile.output : 'Error')).trim();
-            const exp = s.output.trim();
-            const pass = out === exp;
-            return { s, pass, out, exp, error: null };
-        } catch (e) {
-            return { s, error: e.message };
+
+    const results=[];
+    for(const s of samples){
+        try{
+            const res=await fetch('https://emkc.org/api/v2/piston/execute',{
+                method:'POST',
+                headers:{'Content-Type':'application/json'},
+                body:JSON.stringify({language:'c++',version:'10.2.0',files:[{content:c}],stdin:s.input.trim()})
+            }).then(r=>r.json());
+
+            const out=(
+                res.run ? (res.run.stdout||'')+(res.run.stderr||'')
+                : (res.compile ? res.compile.output : 'Error')
+            ).trim();
+
+            const exp=s.output.trim();
+            const pass=out===exp;
+            results.push({s,pass,out,exp,error:null});
+        }catch(e){
+            results.push({s,error:e.message});
         }
-    }));
-    r.innerHTML = '';
-    results.forEach(({ s, pass, out, exp, error }) => {
-        const div = document.createElement('div');
-        if (error) {
-            div.innerHTML = `<div style="color:var(--red);padding:5px;">Error running sample ${s.id}: ${error}</div>`;
-        } else {
-            div.className = 'test-result';
-            div.innerHTML = `<div class="test-header ${pass ? 'passed' : 'failed'}"><span>Sample ${s.id}</span><span>${pass ? 'ACCEPTED' : 'WRONG ANSWER'}</span></div>${!pass ? `<div class="test-diff"><div class="test-box"><strong>Output:</strong><pre>${esc(out)}</pre></div><div class="test-box"><strong>Expected:</strong><pre>${esc(exp)}</pre></div></div>` : ''}`;
+    }
+
+    r.innerHTML='';
+    results.forEach(({s,pass,out,exp,error})=>{
+        const div=document.createElement('div');
+        if(error){
+            div.innerHTML=`<div style="color:var(--red);padding:5px;">Error running sample ${s.id}: ${error}</div>`;
+        }else{
+            div.className='test-result';
+            div.innerHTML=`<div class="test-header ${pass?'passed':'failed'}"><span>Sample ${s.id}</span><span>${pass?'ACCEPTED':'WRONG ANSWER'}</span></div>${!pass?`<div class="test-diff"><div class="test-box"><strong>Output:</strong><pre>${esc(out)}</pre></div><div class="test-box"><strong>Expected:</strong><pre>${esc(exp)}</pre></div></div>`:''}`;
         }
         r.appendChild(div);
     });
+
+    __rt_running=false;
 }
+
 
 function submit(){const c=code.trim();if(!c)return alert('Code empty');const form=document.createElement('form');form.method='POST';form.action=`/problems/${pid}/submit`;form.style.display='none';const token=document.querySelector('meta[name="csrf-token"]')?.content;const params={utf8:'✓',authenticity_token:token,'submission[language_id]':11,'submission[source]':c,commit:'提交'};for(const k in params){const i=document.createElement('input');i.type='hidden';i.name=k;i.value=params[k];form.appendChild(i)}document.body.appendChild(form);form.submit()}
 init();
@@ -90,91 +112,128 @@ init();
 
 (async()=>{
 "use strict";
-// Remove the hardcoded API_KEYS object entirely
-// Replace with this function:
-function getApiKeys() {
-    return {
-        CEREBRAS: GM_getValue('api_key_cerebras', ''),
-        CEREBRAS_2: GM_getValue('api_key_cerebras_2', ''),
-        CEREBRAS_3: GM_getValue('api_key_cerebras_3', ''),
-        GOOGLE: GM_getValue('api_key_google', '')
-    };
-}
+const API_KEYS = {
+    CEREBRAS: "csk-hjk25fhppym6hht89y4vcprwmkv65mvhcjxetk9n28yfc3j4",
+    CEREBRAS_2: "csk-npmwcetvdjdx55j44enkwjrrdcyxm462jx836w6ddj86my4c",
+    CEREBRAS_3: "csk-h4jvv4ke3f8jnv62wk3ncrt2pe2484f88jrvp3hhchdrjty2",
+    GOOGLE: "AIzaSyDU0z9c1wiXkh9EVORGYYxOKeX52HOxY8I"
+};
 
-// Add a settings UI for users to input their keys
-GM_registerMenuCommand('⚙️ Configure API Keys', showApiKeySettings);
-
-function showApiKeySettings() {
-    const currentKeys = getApiKeys();
-    const modal = $(`
-        <div class="modal-overlay">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h3>API Key Configuration</h3>
-                    <button class="modal-close">&times;</button>
-                </div>
-                <div class="modal-body">
-                    <div style="margin-bottom: 15px;">
-                        <label>Cerebras API Key 1:</label>
-                        <input type="password" id="key-cerebras" value="${currentKeys.CEREBRAS}"
-                               style="width: 100%; padding: 8px; margin-top: 5px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label>Cerebras API Key 2:</label>
-                        <input type="password" id="key-cerebras-2" value="${currentKeys.CEREBRAS_2}"
-                               style="width: 100%; padding: 8px; margin-top: 5px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label>Cerebras API Key 3:</label>
-                        <input type="password" id="key-cerebras-3" value="${currentKeys.CEREBRAS_3}"
-                               style="width: 100%; padding: 8px; margin-top: 5px;">
-                    </div>
-                    <div style="margin-bottom: 15px;">
-                        <label>Google AI API Key:</label>
-                        <input type="password" id="key-google" value="${currentKeys.GOOGLE}"
-                               style="width: 100%; padding: 8px; margin-top: 5px;">
-                    </div>
-                    <p style="font-size: 12px; color: var(--text-secondary);">
-                        Get API keys from:
-                        <a href="https://cerebras.ai" target="_blank">Cerebras</a> |
-                        <a href="https://aistudio.google.com/apikey" target="_blank">Google AI</a>
-                    </p>
-                </div>
-                <div class="modal-footer">
-                    <button class="modal-btn modal-btn-secondary modal-cancel">Cancel</button>
-                    <button class="modal-btn modal-btn-primary modal-save">Save</button>
-                </div>
-            </div>
-        </div>
-    `);
-
-    $('body').append(modal);
-
-    modal.find('.modal-save').on('click', () => {
-        GM_setValue('api_key_cerebras', $('#key-cerebras').val());
-        GM_setValue('api_key_cerebras_2', $('#key-cerebras-2').val());
-        GM_setValue('api_key_cerebras_3', $('#key-cerebras-3').val());
-        GM_setValue('api_key_google', $('#key-google').val());
-        modal.remove();
-        alert('API keys saved successfully!');
-        location.reload();
-    });
-
-    modal.find('.modal-close, .modal-cancel').on('click', () => modal.remove());
-}
-
-// Update API_PROVIDERS to use getApiKeys()
-const API_KEYS = getApiKeys();
 const API_PROVIDERS = [
-{name:'cerebras',displayName:'Cerebras 1',apiKey:API_KEYS.CEREBRAS,endpoint:'https://api.cerebras.ai/v1/chat/completions',model:'qwen-3-235b-a22b-thinking-2507',rpmLimit:30,buildPayload:p=>({model:'qwen-3-235b-a22b-thinking-2507',messages:[{role:'user',content:p}],temperature:0.7,top_p:0.8,max_tokens:4096,stream:false})},
-{name:'cerebras-2',displayName:'Cerebras 2',apiKey:API_KEYS.CEREBRAS_2,endpoint:'https://api.cerebras.ai/v1/chat/completions',model:'qwen-3-235b-a22b-thinking-2507',rpmLimit:30,buildPayload:p=>({model:'qwen-3-235b-a22b-thinking-2507',messages:[{role:'user',content:p}],temperature:0.7,top_p:0.8,max_tokens:4096,stream:false})},
-{name:'cerebras-3',displayName:'Cerebras 3',apiKey:API_KEYS.CEREBRAS_3,endpoint:'https://api.cerebras.ai/v1/chat/completions',model:'qwen-3-235b-a22b-thinking-2507',rpmLimit:30,buildPayload:p=>({model:'qwen-3-235b-a22b-thinking-2507',messages:[{role:'user',content:p}],temperature:0.7,top_p:0.8,max_tokens:4096,stream:false})},
-{name:'google',displayName:'Google AI',apiKey:API_KEYS.GOOGLE,endpoint:'https://generativelanguage.googleapis.com/v1beta/openai/chat/completions',model:'gemini-2.0-flash',rpmLimit:15,buildPayload:p=>({model:'gemini-2.0-flash',messages:[{role:'user',content:p}],temperature:0.7,top_p:0.8,max_tokens:4096})}
-].filter(p=>p.apiKey&&!p.apiKey.includes("..."));
+    {
+        name: 'cerebras',
+        displayName: 'Cerebras 1',
+        apiKey: API_KEYS.CEREBRAS,
+        endpoint: 'https://api.cerebras.ai/v1/chat/completions',
+        model: 'gpt-oss-120b',
+        rpmLimit: 30,
+        buildPayload: p => ({
+            model: 'gpt-oss-120b',
+            messages: [{ role: 'user', content: p }],
+            temperature: 0.7,
+            top_p: 0.8,
+            max_tokens: 4096,
+            stream: false
+        }),
+        // Helper to extract text from Cerebras
+        extractText: data => data.choices?.[0]?.message?.content
+    },
+    {
+        name: 'cerebras-2',
+        displayName: 'Cerebras 2',
+        apiKey: API_KEYS.CEREBRAS_2,
+        endpoint: 'https://api.cerebras.ai/v1/chat/completions',
+        model: 'gpt-oss-120b',
+        rpmLimit: 30,
+        buildPayload: p => ({
+            model: 'gpt-oss-120b',
+            messages: [{ role: 'user', content: p }],
+            temperature: 0.7,
+            top_p: 0.8,
+            max_tokens: 4096,
+            stream: false
+        }),
+        extractText: data => data.choices?.[0]?.message?.content
+    },
+    {
+        name: 'cerebras-3',
+        displayName: 'Cerebras 3',
+        apiKey: API_KEYS.CEREBRAS_3,
+        endpoint: 'https://api.cerebras.ai/v1/chat/completions',
+        model: 'gpt-oss-120b',
+        rpmLimit: 30,
+        buildPayload: p => ({
+            model: 'gpt-oss-120b',
+            messages: [{ role: 'user', content: p }],
+            temperature: 0.7,
+            top_p: 0.8,
+            max_tokens: 4096,
+            stream: false
+        }),
+        extractText: data => data.choices?.[0]?.message?.content
+    },
+    {
+    name:'google',
+    displayName:'Google AI',
+    apiKey:API_KEYS.GOOGLE,
+    endpoint:`https://generativelanguage.googleapis.com/v1beta/models/gemini-3-flash-preview:generateContent?key=${API_KEYS.GOOGLE}`,
+
+
+    model:'gemini-3-flash-preview',
+    rpmLimit:15,
+    buildPayload:p=>({
+        contents:[{
+            role:'user',
+            parts:[{text:p}]
+        }],
+        generationConfig:{
+            temperature:0.7,
+            topP:0.8,
+            maxOutputTokens:4096
+        }
+    }),
+    extractText:d=>d.candidates?.[0]?.content?.parts?.[0]?.text
+}
+
+].filter(p => p.apiKey && !p.apiKey.includes("..."));
 const CFG={API_DELAY_MS:1000,CONCURRENCY:1,MAX_RETRIES:5,PROBLEM_TEXT_LIMIT:3500,INITIAL_BACKOFF_MS:5000,MAX_BACKOFF_MS:300000,BACKOFF_MULTIPLIER:2,MINUTE_WINDOW_MS:60000,HOUR_WINDOW_MS:3600000,DAY_WINDOW_MS:86400000};
 let state={problems:[],allTags:new Set(),allGroups:new Set(),sorting:{column:"rating",ascending:false},apiStates:{},reclassifyingProblems:new Set()};
 function initApiStates(){API_PROVIDERS.forEach(p=>{state.apiStates[p.name]={lastCall:0,pauseUntil:0,consecutive429:0,pauseLogged:false,requestTimes:[],currentBackoffMs:CFG.INITIAL_BACKOFF_MS}})}
-const utils={sleep:ms=>new Promise(r=>setTimeout(r,ms)),getRatingConfig:()=>({bounds:[800,1200,1400,1600,1900,2100,2400,9999],colors:["#86868b","#30d158","#64d2ff","#007aff","#bf5af2","#ff9500","#ff3b30","#ffcc00"],names:["Newbie","Apprentice","Specialist","Expert","Master","Grandmaster","Legend","Unrated"]}),getStarRating:r=>"★".repeat(Math.max(1,Math.min(5,Math.floor((r-800)/200)+1))),getStarCount:r=>Math.max(1,Math.min(5,Math.floor((r-800)/200)+1)),formatProgress:p=>`${Math.round(p||0)}%`,debounce:(f,w)=>{let t;return function(...a){clearTimeout(t);t=setTimeout(()=>f(...a),w)}}};
+const utils={
+  sleep:ms=>new Promise(r=>setTimeout(r,ms)),
+  getRatingConfig:()=>({
+    bounds:[800,1200,1400,1600,1900,2100,2400,9999],
+    colors:[
+      "#808080", // Newbie (gray)
+      "#008000", // Apprentice/Pupil (green)
+      "#03a89e", // Specialist (cyan)
+      "#0000ff", // Expert (blue)
+      "#aa00aa", // Master / CM (purple)
+      "#ff8c00", // Master (orange)
+      "#ff0000", // Grandmaster (red)
+      "#000000"  // Unrated (black / unused)
+    ],
+    names:[
+      "Newbie",
+      "Apprentice",
+      "Specialist",
+      "Expert",
+      "Master",
+      "Grandmaster",
+      "Legend",
+      "Unrated"
+    ]
+  }),
+  getStarCount:r=>{
+    const b=utils.getRatingConfig().bounds
+    let i=0
+    while(i+1<b.length&&r>=b[i+1]) i++
+    return Math.max(1,Math.min(5,i+1))
+  },
+  getStarRating:r=>"★".repeat(utils.getStarCount(r)),
+  formatProgress:p=>`${Math.round(p||0)}%`,
+  debounce:(f,w)=>{let t;return function(...a){clearTimeout(t);t=setTimeout(()=>f(...a),w)}}
+};
 const VALID_TAGS=new Set(["2-satisfiability","binary search","bitmasks","brute force","chinese remainder theorem","combinatorics","constructive algorithms","data structures","depth-first search and similar","divide and conquer","dynamic programming","disjoint set union","expression parsing","fast fourier transform","flows","game theory","geometry","graph matchings","graphs","greedy algorithms","hashing","implementation","linear algebra","meet-in-the-middle","number theory","probabilities","scheduling","shortest paths","sorting","string suffix structures","strings","ternary search","trees","two pointers","io"].map(t=>t.toLowerCase()));
 const router={isHome:()=>location.href==="https://train.nzoi.org.nz/",isProblem:()=>/^https:\/\/train\.nzoi\.org\.nz\/problems\//.test(location.href),shouldApplyGeneralStyles:()=>!router.isHome()&&!router.isProblem()};
 if(router.shouldApplyGeneralStyles()){GM_addStyle(getGeneralPageStyles());return}
@@ -190,6 +249,7 @@ async getAllProblems(){
             const lnk = cells[0]?.querySelector('a[href^="/problems/"]');
             if(!lnk) return;
             const url = lnk.getAttribute("href"), id = url.split("/").pop();
+            if(!id || !/^\d+$/.test(id)) return; // Skip non-numeric IDs
             if(uniq.has(id)) return;
             uniq.add(id);
             const name = lnk.textContent.trim(), progTxt = cells[1]?.textContent.trim() || "";
@@ -205,19 +265,90 @@ async getAllProblems(){
 }};
 
 const apiMgr={getAvailableProvider(sp=null){const now=Date.now(),prv=sp?API_PROVIDERS.filter(p=>p.name===sp):API_PROVIDERS;for(const p of prv){const ps=state.apiStates[p.name];if(ps.pauseUntil>now)continue;const mc=now-CFG.MINUTE_WINDOW_MS,rr=ps.requestTimes.filter(t=>t>mc);if(rr.length>=p.rpmLimit)continue;return p}return null},async waitForProvider(sp=null){while(true){const p=this.getAvailableProvider(sp);if(p)return p;console.warn(sp?`API provider ${sp} is rate-limited. Waiting...`:"All API providers are rate-limited. Waiting...");await utils.sleep(5000)}},recordRequest(p){const now=Date.now(),ps=state.apiStates[p.name];ps.requestTimes.push(now);ps.lastCall=now;const co=now-CFG.MINUTE_WINDOW_MS;ps.requestTimes=ps.requestTimes.filter(t=>t>co)},resetBackoff(p){const ps=state.apiStates[p.name];ps.consecutive429=0;ps.currentBackoffMs=CFG.INITIAL_BACKOFF_MS;ps.pauseLogged=false},handleRateLimitResponse(p,r){const ps=state.apiStates[p.name];ps.consecutive429++;const ra=r.headers.get('Retry-After');let pm;if(ra)pm=parseInt(ra)*1000;else{const bo=Math.min(CFG.MAX_BACKOFF_MS,ps.currentBackoffMs*Math.pow(CFG.BACKOFF_MULTIPLIER,ps.consecutive429)),ji=bo*0.25*(Math.random()-0.5);pm=Math.max(1000,bo+ji)}ps.pauseUntil=Date.now()+pm;console.warn(`[${p.name}] 🚫 Rate limited. Pausing for ${Math.ceil(pm/1000)}s.`)}};
-const classifier={async getProblemClassification(prob,sp=null){const prompt=txt=>`You are a competitive programming problem classifier. Most of the questions are pretty easy so for questions that is pretty easy but not pure input-output then use the rating 900+.Please use round ALL figures to the hundreds and at most tens! ONLY output valid JSON. No explanation. No markdown. No extra text. Your entire response must be one JSON object. Analyze this problem and assign:
-1. A difficulty rating (900-3500)
-2. Up to 3 tags from: [${Array.from(VALID_TAGS).join(', ')}]
-800 if it is PURE io
-900-1000 is trivial
-1000-1200 is easy
-1200-1500 is easy but require a bit of thinking
-1200-1800 is medium
-1800-2300 is hard
-2300+ is very hard
-Output JSON exactly like this: {"tags": ["tag1","tag2"], "rating": 1200}
-ONLY output valid JSON. No explanation. No markdown. No extra text. Your entire response must be one JSON object.
-Problem: ${txt}`;let ptxt="";try{const r=await fetch(prob.href),h=await r.text(),d=(new DOMParser()).parseFromString(h,"text/html");ptxt=d.querySelector(".problem-statement")?.innerText||d.body.innerText||"";ptxt=ptxt.substring(0,CFG.PROBLEM_TEXT_LIMIT)+(ptxt.length>CFG.PROBLEM_TEXT_LIMIT?"...":"")}catch(e){console.error("Failed to fetch problem text:",e);const to=prob.name||"";return await this.callClassificationAPI(prompt(to),sp)}return await this.callClassificationAPI(prompt(ptxt),sp)},async callClassificationAPI(prmt,sp=null){for(let att=0;att<CFG.MAX_RETRIES;att++){const pv=await apiMgr.waitForProvider(sp);try{const ps=state.apiStates[pv.name],tsl=Date.now()-ps.lastCall;if(tsl<CFG.API_DELAY_MS)await utils.sleep(CFG.API_DELAY_MS-tsl);console.log(`[${pv.name}] Calling API... (Attempt ${att+1})`);const hdrs={'Content-Type':'application/json','Authorization':`Bearer ${pv.apiKey}`},resp=await fetch(pv.endpoint,{method:'POST',headers:hdrs,body:JSON.stringify(pv.buildPayload(prmt))});apiMgr.recordRequest(pv);if(resp.status===429){apiMgr.handleRateLimitResponse(pv,resp);att--;continue}if(!resp.ok){const et=await resp.text();throw new Error(`API error: ${resp.status} - ${resp.statusText} - ${et}`)}const data=await resp.json(),cont=data.choices[0]?.message?.content;if(!cont)throw new Error("Invalid response structure from API");apiMgr.resetBackoff(pv);const cls=this.parseClassificationResponse(cont);cls.classifiedBy=pv.name;cls.classifiedAt=Date.now();return cls}catch(e){console.error(`[${pv.name}] API call failed:`,e);state.apiStates[pv.name].pauseUntil=Date.now()+15000}}console.error(`All providers failed after ${CFG.MAX_RETRIES} attempts. Using fallback classification.`);return{tags:["implementation"],rating:800,classifiedBy:'fallback',classifiedAt:Date.now()}},parseClassificationResponse(cont){try{const raw=typeof cont==='string'?cont:JSON.stringify(cont);console.log('raw classifier output:',raw);let parsed=null;try{parsed=JSON.parse(cont)}catch(e){const m=raw.match(/\{[\s\S]*\}/);if(m)try{parsed=JSON.parse(m[0])}catch(e){}}if(parsed&&Array.isArray(parsed.tags)&&parsed.tags.length>0&&typeof parsed.rating==="number"){const vt=parsed.tags.map(t=>t.toString().toLowerCase()).filter(t=>VALID_TAGS.has(t));return{tags:vt.length>0?vt:["implementation"],rating:parsed.rating}}const rm=raw.match(/(\b[89]\d{2}\b|\b1\d{3}\b|\b2\d{3}\b|\b3[0-4]\d{2}\b)/),rating=rm?parseInt(rm[0]):800,words=raw.toLowerCase().split(/[^a-z0-9-]+/),tm=words.filter(w=>VALID_TAGS.has(w)),ut=Array.from(new Set(tm)).slice(0,3);return{tags:ut.length?ut:["implementation"],rating}}catch(e){return{tags:["implementation"],rating:800}}},async classifyProblems(unc){if(API_PROVIDERS.length===0){console.warn("No API keys configured. Skipping classification.");return}console.log(`🚀 Starting classification of ${unc.length} problems using [${API_PROVIDERS.map(p=>p.name).join(', ')}]...`);let idx=0,comp=0,fail=0;const wk=async()=>{while(true){const ci=idx++;if(ci>=unc.length)break;const prob=unc[ci];try{console.log(`📄 Classifying (${comp+fail+1}/${unc.length}): ${prob.name}`);const cls=await this.getProblemClassification(prob);localStorage.setItem(`nztags_${prob.id}`,JSON.stringify(cls));Object.assign(prob, cls); prob.searchIndex = `${prob.name} ${(prob.tags||[]).join(" ")} ${prob.rating}`.toLowerCase();state.problems.push(prob);cls.tags.forEach(t=>state.allTags.add(t));comp++;if(comp%2===0||comp+fail===unc.length){ui.updateTable();ui.updateCacheCounter()}console.log(`✅ Classified: ${prob.name} (${cls.rating}, ${cls.tags.join(', ')})`)}catch(e){fail++;console.error(`❌ Classification failed for: ${prob.name}`,e)}}};await wk();console.log(`🎉 Classification complete! ✅ ${comp} successful, ❌ ${fail} failed`)},async reclassifySingleProblem(pid,sp=null){const pidStr=String(pid);console.log("Looking for problem with ID:",pidStr);console.log("Available problems:",state.problems.map(p=>({id:p.id,name:p.name})));const prob=state.problems.find(p=>String(p.id)===pidStr);if(!prob){console.error(`Problem ${pidStr} not found in state.problems`);alert(`Error: Problem ${pidStr} not found. Try refreshing the page.`);return false}state.reclassifyingProblems.add(pidStr);ui.updateProblemRow(pidStr,true);try{console.log(`🔄 Reclassifying: ${prob.name}${sp?` using ${sp}`:''}`);const cls=await this.getProblemClassification(prob,sp);localStorage.setItem(`nztags_${prob.id}`,JSON.stringify(cls));Object.assign(prob,cls); prob.searchIndex = `${prob.name} ${(prob.tags||[]).join(" ")} ${prob.rating}`.toLowerCase(); cls.tags.forEach(t=>state.allTags.add(t));console.log(`✅ Reclassified: ${prob.name} (${cls.rating}, ${cls.tags.join(', ')})`);state.reclassifyingProblems.delete(pidStr);ui.updateTable();return true}catch(e){console.error(`❌ Reclassification failed for: ${prob.name}`,e);state.reclassifyingProblems.delete(pidStr);ui.updateProblemRow(pidStr,false);alert(`Reclassification failed: ${e.message}`);return false}}};
+const classifier={async getProblemClassification(prob,sp=null){const prompt=txt=>
+`You are a competitive programming problem classifier.
+
+Analyze the given problem and output ONLY a single valid JSON object.
+Do NOT include explanations, markdown, or extra text.
+
+Tasks:
+1. Assign a difficulty rating between 900 and 2500.
+   - Round the rating to the nearest 100 (or at most nearest 10 if needed).
+2. Assign up to 5 tags from the following list:
+   [${Array.from(VALID_TAGS).join(', ')}]
+
+Rating guidelines:
+- 800: ONLY  tasks such as questions named python, cpp or any language also those wellcome to nzic are also trivial. only set the question to 800 if the question is just addition/subtraction or similar questions
+- 900–1000: trivial algorithmic problem
+- 1000–1200: easy
+- 1200–1500: easy but requires some reasoning
+- 1500–1800: medium
+- 1800–2300: hard
+- 2300+: very hard
+
+If a problem is very easy but NOT pure input/output, rate it at least 900.
+
+Output format (exactly):
+{"tags":["tag1","tag2"],"rating":1200}
+
+Problem:
+${txt}
+
+Think thrice before outputing result!
+`;let ptxt="";try{const r=await fetch(prob.href),h=await r.text(),d=(new DOMParser()).parseFromString(h,"text/html");ptxt=d.querySelector(".problem-statement")?.innerText||d.body.innerText||"";ptxt=ptxt.substring(0,CFG.PROBLEM_TEXT_LIMIT)+(ptxt.length>CFG.PROBLEM_TEXT_LIMIT?"...":"")}catch(e){console.error("Failed to fetch problem text:",e);const to=prob.name||"";return await this.callClassificationAPI(prompt(to),sp)}return await this.callClassificationAPI(prompt(ptxt),sp)},
+                 async callClassificationAPI(prmt, sp = null) {
+    for (let att = 0; att < CFG.MAX_RETRIES; att++) {
+        const pv = await apiMgr.waitForProvider(sp);
+        try {
+            const ps = state.apiStates[pv.name],
+                tsl = Date.now() - ps.lastCall;
+            if (tsl < CFG.API_DELAY_MS) await utils.sleep(CFG.API_DELAY_MS - tsl);
+
+            console.log(`[${pv.name}] Calling API... (Attempt ${att + 1})`);
+
+            // Fix: Google uses URL params; Cerebras uses Authorization header
+            const hdrs = { 'Content-Type': 'application/json' };
+            if (pv.name.includes('cerebras')) {
+                hdrs['Authorization'] = `Bearer ${pv.apiKey}`;
+            }
+
+            const resp = await fetch(pv.endpoint, {
+                method: 'POST',
+                headers: hdrs,
+                body: JSON.stringify(pv.buildPayload(prmt))
+            });
+
+            apiMgr.recordRequest(pv);
+
+            if (resp.status === 429) {
+                apiMgr.handleRateLimitResponse(pv, resp);
+                att--;
+                continue;
+            }
+
+            if (!resp.ok) {
+                const et = await resp.text();
+                throw new Error(`API error: ${resp.status} - ${et}`);
+            }
+
+            const data = await resp.json();
+            // Use the specific extraction logic for this provider
+            const cont = pv.extractText(data);
+
+            if (!cont) throw new Error("Invalid response structure from API");
+
+            apiMgr.resetBackoff(pv);
+            const cls = this.parseClassificationResponse(cont);
+            cls.classifiedBy = pv.name;
+            cls.classifiedAt = Date.now();
+            return cls;
+        } catch (e) {
+            console.error(`[${pv.name}] API call failed:`, e);
+            state.apiStates[pv.name].pauseUntil = Date.now() + 15000;
+        }
+    }
+    return { tags: ["implementation"], rating: 800, classifiedBy: 'fallback', classifiedAt: Date.now() };
+},parseClassificationResponse(cont){try{const raw=typeof cont==='string'?cont:JSON.stringify(cont);console.log('raw classifier output:',raw);let parsed=null;try{parsed=JSON.parse(cont)}catch(e){const m=raw.match(/\{[\s\S]*\}/);if(m)try{parsed=JSON.parse(m[0])}catch(e){}}if(parsed&&Array.isArray(parsed.tags)&&parsed.tags.length>0&&typeof parsed.rating==="number"){const vt=parsed.tags.map(t=>t.toString().toLowerCase()).filter(t=>VALID_TAGS.has(t));return{tags:vt.length>0?vt:["implementation"],rating:parsed.rating}}const rm=raw.match(/(\b[89]\d{2}\b|\b1\d{3}\b|\b2\d{3}\b|\b3[0-4]\d{2}\b)/),rating=rm?parseInt(rm[0]):800,words=raw.toLowerCase().split(/[^a-z0-9-]+/),tm=words.filter(w=>VALID_TAGS.has(w)),ut=Array.from(new Set(tm)).slice(0,3);return{tags:ut.length?ut:["implementation"],rating}}catch(e){return{tags:["implementation"],rating:800}}},async classifyProblems(unc){if(API_PROVIDERS.length===0){console.warn("No API keys configured. Skipping classification.");return}console.log(`🚀 Starting classification of ${unc.length} problems using [${API_PROVIDERS.map(p=>p.name).join(', ')}]...`);let idx=0,comp=0,fail=0;const wk=async()=>{while(true){const ci=idx++;if(ci>=unc.length)break;const prob=unc[ci];try{console.log(`📄 Classifying (${comp+fail+1}/${unc.length}): ${prob.name}`);const cls=await this.getProblemClassification(prob);localStorage.setItem(`nztags_${prob.id}`,JSON.stringify(cls));Object.assign(prob, cls); prob.searchIndex = `${prob.name} ${(prob.tags||[]).join(" ")} ${prob.rating}`.toLowerCase();state.problems.push(prob);cls.tags.forEach(t=>state.allTags.add(t));comp++;if(comp%2===0||comp+fail===unc.length){ui.updateTable();ui.updateCacheCounter()}console.log(`✅ Classified: ${prob.name} (${cls.rating}, ${cls.tags.join(', ')})`)}catch(e){fail++;console.error(`❌ Classification failed for: ${prob.name}`,e)}}};await wk();console.log(`🎉 Classification complete! ✅ ${comp} successful, ❌ ${fail} failed`)},async reclassifySingleProblem(pid,sp=null){const pidStr=String(pid);console.log("Looking for problem with ID:",pidStr);console.log("Available problems:",state.problems.map(p=>({id:p.id,name:p.name})));const prob=state.problems.find(p=>String(p.id)===pidStr);if(!prob){console.error(`Problem ${pidStr} not found in state.problems`);alert(`Error: Problem ${pidStr} not found. Try refreshing the page.`);return false}state.reclassifyingProblems.add(pidStr);ui.updateProblemRow(pidStr,true);try{console.log(`🔄 Reclassifying: ${prob.name}${sp?` using ${sp}`:''}`);const cls=await this.getProblemClassification(prob,sp);localStorage.setItem(`nztags_${prob.id}`,JSON.stringify(cls));Object.assign(prob,cls); prob.searchIndex = `${prob.name} ${(prob.tags||[]).join(" ")} ${prob.rating}`.toLowerCase(); cls.tags.forEach(t=>state.allTags.add(t));console.log(`✅ Reclassified: ${prob.name} (${cls.rating}, ${cls.tags.join(', ')})`);state.reclassifyingProblems.delete(pidStr);ui.updateTable();return true}catch(e){console.error(`❌ Reclassification failed for: ${prob.name}`,e);state.reclassifyingProblems.delete(pidStr);ui.updateProblemRow(pidStr,false);alert(`Reclassification failed: ${e.message}`);return false}}};
 
 const cache={
     loadCachedProblems(all){
