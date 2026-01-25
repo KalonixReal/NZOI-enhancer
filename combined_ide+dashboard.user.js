@@ -2,7 +2,7 @@
 // @name         NZOI Unified Platform
 // @namespace    http://tampermonkey.net/
 // @version      1.1
-// @description  Combines NZOI Lite IDE and Professional Dashboard 
+// @description  Combines NZOI Lite IDE and Professional Dashboard
 // @match        https://train.nzoi.org.nz/*
 // @grant        GM_addStyle
 // @grant        GM_setValue
@@ -36,7 +36,18 @@ const getMeta=()=>{const d=localStorage.getItem('nzoi-files-metadata');return d?
 const saveMeta=m=>localStorage.setItem('nzoi-files-metadata',JSON.stringify(m));
 const getPName=()=>document.querySelector('h1.ui.header')?.textContent.trim()||document.title.split('|')[0].trim()||'Untitled';
 const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+(function(){
+    const imgs = document.querySelectorAll("img");
+    imgs.forEach(img=>{
+        if(img.dataset.hc) return; // already processed
 
+        // Exclude images from train.nzoi.org.nz/assets/
+        if(img.src.includes("train.nzoi.org.nz/assets/")) return;
+
+        img.dataset.hc = 1;
+        img.style.filter = "invert(1) contrast(200%) brightness(120%)";
+    });
+})();
 function delFile(id){const m=getMeta();if(!m[id])return;if(confirm(`Delete file?\n\nProblem: ${m[id].name}`)){localStorage.removeItem(`nzoi-code-${id}`);delete m[id];saveMeta(m);showFiles()}}
 function editFile(id){if(id===pid){closeFiles();return}const m=getMeta();const f=m[id];const c=localStorage.getItem(`nzoi-code-${id}`)||'';if(!f)return;const modal=document.createElement('div');modal.className='nzoi-modal';modal.innerHTML=`<div class="nzoi-modal-content"><div class="nzoi-modal-header"><h2>${esc(f.name)}</h2><button class="nzoi-modal-close">×</button></div><div class="nzoi-modal-body"><textarea class="nzoi-file-editor">${esc(c)}</textarea></div><div class="nzoi-modal-footer"><button class="nzoi-btn-save nzoi-btn nzoi-btn-primary">Save Changes</button><button class="nzoi-btn-cancel nzoi-btn nzoi-btn-secondary">Cancel</button></div></div>`;document.body.appendChild(modal);modal.querySelector('.nzoi-btn-save').onclick=()=>{localStorage.setItem(`nzoi-code-${id}`,modal.querySelector('.nzoi-file-editor').value);const md=getMeta();if(md[id]){md[id].timestamp=Date.now();saveMeta(md)}modal.remove();showFiles()};modal.querySelector('.nzoi-btn-cancel').onclick=()=>modal.remove();modal.querySelector('.nzoi-modal-close').onclick=()=>modal.remove()}
 function showFiles(){const ex=document.querySelector('.nzoi-modal');if(ex)ex.remove();const m=getMeta();const files=Object.values(m).sort((a,b)=>b.timestamp-a.timestamp);const modal=document.createElement('div');modal.className='nzoi-modal';const list=files.length===0?'<div class="nzoi-empty-state">No saved files.</div>':files.map(f=>`<div class="nzoi-file-item ${f.id===pid?'current':''}"><div class="nzoi-file-info"><div class="nzoi-file-name">${esc(f.name)}</div><div class="nzoi-file-meta">ID: ${f.id}</div></div><div class="nzoi-file-actions"><button class="nzoi-btn nzoi-btn-small nzoi-btn-primary nzoi-open-btn" data-id="${f.id}">${f.id===pid?'Current':'Edit'}</button><button class="nzoi-btn nzoi-btn-small nzoi-btn-danger nzoi-delete-btn" data-id="${f.id}">Delete</button></div></div>`).join('');modal.innerHTML=`<div class="nzoi-modal-content"><div class="nzoi-modal-header"><h2>Code Manager</h2><button class="nzoi-modal-close">×</button></div><div class="nzoi-modal-body"><div class="nzoi-file-list">${list}</div></div></div>`;document.body.appendChild(modal);modal.querySelector('.nzoi-modal-close').onclick=()=>modal.remove();modal.querySelectorAll('.nzoi-open-btn').forEach(b=>b.onclick=()=>editFile(b.dataset.id));modal.querySelectorAll('.nzoi-delete-btn').forEach(b=>b.onclick=()=>delFile(b.dataset.id))}
