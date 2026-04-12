@@ -3,6 +3,7 @@
 // @namespace    http://tampermonkey.net/
 // @version      1.1
 // @description  Combines NZOI Lite IDE and Professional Dashboard
+
 // @match        https://train.nzoi.org.nz/*
 // @grant        GM_addStyle
 // @grant        GM_setValue
@@ -17,15 +18,23 @@
 "use strict";
 if(!window.location.pathname.match(/\/problems\/[^\/]+/)) return;
 
-GM_addStyle(`:root{--bg0:#121212;--bg1:#1e1e1e;--bg2:#252526;--border:#333;--border-light:#444;--fg0:#e0e0e0;--fg-muted:#999;--accent:#0a84ff;--green:#2ecc71;--red:#e06c75}pre, code, kbd, samp, .highlight pre, .ui.segment pre, .problem-statement pre {
+GM_addStyle(`:root{--bg0:#121212;--bg1:#1e1e1e;--bg2:#252526;--border:#333;--border-light:#444;--fg0:#e0e0e0;--fg-muted:#999;--accent:#0a84ff;--green:#2ecc71;--red:#e06c75}pre, .highlight pre, .ui.segment pre, .problem-statement pre {
     background-color: var(--bg1) !important;
     color: var(--fg0) !important;
     border: 1px solid var(--border) !important;
-    padding: 10px !important;
+    padding: 8px !important;
     border-radius: 4px !important;
     overflow-x: auto !important;
-    white-space: pre-wrap !important; /* Ensures text doesn't overflow horizontally */
-}body,html{background-color:var(--bg0)!important;color:var(--fg0)!important;font-family:'Segoe UI',sans-serif!important}#main-container,.problem-description{background:var(--bg0)!important;color:var(--fg0)!important}#main-page-title-box,.ui.segment,.ui.breadcrumb,.ui.container{background:transparent!important;box-shadow:none!important;border:none!important;padding:10px 0!important;margin:0!important}.ui.breadcrumb a{color:var(--fg-muted)!important}.ui.breadcrumb .divider{color:var(--border)!important}.ui.header .sub.header,h1,h2,h3,h4,h5,.ui.header{color:var(--fg0)!important}a{color:var(--fg0);text-decoration:none;transition:color .2s}a:hover{color:var(--accent)}.problem-description pre,.problem-description code,.samples pre,.highlight{background:var(--bg1)!important;color:var(--fg0)!important;border:1px solid var(--border)!important;border-radius:4px!important}.problem-description table,table,td,th{background:var(--bg1)!important;color:var(--fg0)!important;border-color:var(--border)!important}.samples{border:1px solid var(--border)!important}.samples li{background:var(--bg2)!important;border-color:var(--border)!important}#nzoi-layout{display:flex;height:100vh;overflow:hidden;background:var(--bg0)}#main-container{width:50%;overflow-y:auto;padding:20px;box-sizing:border-box;border-right:1px solid var(--border)}#nzoi-resizer{width:6px;cursor:col-resize;background:var(--bg1);border-left:1px solid var(--border);border-right:1px solid var(--border);flex-shrink:0}#nzoi-resizer:hover{background:var(--accent)}#nzoi-sidebar{width:50%;background:var(--bg1);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}.sidebar-content{height:100%;display:flex;flex-direction:column;padding:10px;box-sizing:border-box}.editor-controls{margin-bottom:10px;display:flex;justify-content:flex-end;gap:8px}button{border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold}#run-btn{background:#4263eb;color:#fff}#submit-btn{background:var(--green);color:#fff}#paste-btn,#files-btn{background:var(--bg2);color:var(--fg0);border:1px solid var(--border)}#editor-container{flex:1;border:1px solid var(--border);border-radius:4px;overflow:hidden;min-height:200px}#clangd-iframe{width:100%;height:100%;border:none}#editor-vertical-resizer{height:8px;background:var(--bg1);cursor:row-resize;display:flex;justify-content:center;align-items:center}#editor-vertical-resizer::after{content:'...';color:var(--border-light);line-height:5px}#test-results-container{height:30%;background:var(--bg1);border-top:1px solid var(--border);display:flex;flex-direction:column}#test-results{padding:10px;overflow-y:auto;flex:1;background:var(--bg1)}.test-result{margin-bottom:8px;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg2)}.test-header{padding:8px;background:var(--bg2);display:flex;justify-content:space-between;font-size:13px;font-weight:bold}.test-header.passed{color:var(--green)}.test-header.failed{color:var(--red)}.test-diff{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;background:var(--bg1)}.test-box{background:var(--bg1);padding:10px;border-radius:4px}.test-box strong{color:var(--fg0);display:block;margin-bottom:5px}.test-box pre{margin:0;white-space:pre-wrap;font-family:monospace;font-size:12px;color:var(--fg0);background:var(--bg0)!important;padding:8px;border-radius:4px}.nzoi-modal{position:fixed;z-index:10000;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;justify-content:center;align-items:center}.nzoi-modal-content{background:var(--bg1);width:80%;max-width:600px;border-radius:8px;border:1px solid var(--border);display:flex;flex-direction:column;max-height:80vh}.nzoi-modal-header{padding:15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.nzoi-modal-body{padding:15px;overflow-y:auto;flex:1}.nzoi-modal-footer{padding:15px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}.nzoi-file-item{padding:10px;border:1px solid var(--border);margin-bottom:5px;border-radius:4px;background:var(--bg2);display:flex;justify-content:space-between;align-items:center}.nzoi-file-editor{width:100%;height:300px;background:var(--bg0);color:var(--fg0);border:1px solid var(--border);padding:10px;font-family:monospace}.nzoi-btn{border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:13px}.nzoi-btn-primary{background:var(--accent);color:#fff}.nzoi-btn-secondary{background:var(--bg2);color:var(--fg0);border:1px solid var(--border)}.nzoi-btn-danger{background:var(--red);color:#fff}.nzoi-btn-small{padding:4px 8px;font-size:12px}.nzoi-file-info{flex:1}.nzoi-file-name{font-weight:bold;margin-bottom:2px}.nzoi-file-meta{font-size:11px;color:var(--fg-muted)}.nzoi-file-actions{display:flex;gap:5px}.nzoi-modal-close{background:none;border:none;color:var(--fg-muted);font-size:24px;cursor:pointer;padding:0;width:24px;height:24px}.nzoi-empty-state{color:var(--fg-muted);text-align:center;padding:20px}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:6px;border:2px solid var(--bg0)}::-webkit-scrollbar-thumb:hover{background:var(--border-light)}`);
+    white-space: pre-wrap !important;
+}
+
+code, kbd, samp {
+    background-color: var(--bg1) !important;
+    color: var(--fg0) !important;
+    border: none !important;
+    padding: 2px 4px !important;
+}
+body,html{background-color:var(--bg0)!important;color:var(--fg0)!important;font-family:'Segoe UI',sans-serif!important}#main-container,.problem-description{background:var(--bg0)!important;color:var(--fg0)!important}#main-page-title-box,.ui.segment,.ui.breadcrumb,.ui.container{background:transparent!important;box-shadow:none!important;border:none!important;padding:10px 0!important;margin:0!important}.ui.breadcrumb a{color:var(--fg-muted)!important}.ui.breadcrumb .divider{color:var(--border)!important}.ui.header .sub.header,h1,h2,h3,h4,h5,.ui.header{color:var(--fg0)!important}a{color:var(--fg0);text-decoration:none;transition:color .2s}a:hover{color:var(--accent)}.problem-description pre,.problem-description code,.samples pre,.highlight{background:var(--bg1)!important;color:var(--fg0)!important;border:1px solid var(--border)!important;border-radius:4px!important}.problem-description table,table,td,th{background:var(--bg1)!important;color:var(--fg0)!important;border-color:var(--border)!important}.samples{border:1px solid var(--border)!important}.samples li{background:var(--bg2)!important;border-color:var(--border)!important}#nzoi-layout{display:flex;height:100vh;overflow:hidden;background:var(--bg0)}#main-container{width:50%;overflow-y:auto;padding:20px;box-sizing:border-box;border-right:1px solid var(--border)}#nzoi-resizer{width:6px;cursor:col-resize;background:var(--bg1);border-left:1px solid var(--border);border-right:1px solid var(--border);flex-shrink:0}#nzoi-resizer:hover{background:var(--accent)}#nzoi-sidebar{width:50%;background:var(--bg1);display:flex;flex-direction:column;overflow:hidden;flex-shrink:0}.sidebar-content{height:100%;display:flex;flex-direction:column;padding:10px;box-sizing:border-box}.editor-controls{margin-bottom:10px;display:flex;justify-content:flex-end;gap:8px}button{border:none;padding:8px 16px;border-radius:4px;cursor:pointer;font-weight:bold}#run-btn{background:#4263eb;color:#fff}#submit-btn{background:var(--green);color:#fff}#paste-btn,#files-btn{background:var(--bg2);color:var(--fg0);border:1px solid var(--border)}#editor-container{flex:1;border:1px solid var(--border);border-radius:4px;overflow:hidden;min-height:200px}#clangd-iframe{width:100%;height:100%;border:none}#editor-vertical-resizer{height:8px;background:var(--bg1);cursor:row-resize;display:flex;justify-content:center;align-items:center}#editor-vertical-resizer::after{content:'...';color:var(--border-light);line-height:5px}#test-results-container{height:30%;background:var(--bg1);border-top:1px solid var(--border);display:flex;flex-direction:column}#test-results{padding:10px;overflow-y:auto;flex:1;background:var(--bg1)}.test-result{margin-bottom:8px;border:1px solid var(--border);border-radius:4px;overflow:hidden;background:var(--bg2)}.test-header{padding:8px;background:var(--bg2);display:flex;justify-content:space-between;font-size:13px;font-weight:bold}.test-header.passed{color:var(--green)}.test-header.failed{color:var(--red)}.test-diff{display:grid;grid-template-columns:1fr 1fr;gap:10px;padding:10px;background:var(--bg1)}.test-box{background:var(--bg1);padding:10px;border-radius:4px}.test-box strong{color:var(--fg0);display:block;margin-bottom:5px}.test-box pre{margin:0;white-space:pre-wrap;font-family:monospace;font-size:12px;color:var(--fg0);background:var(--bg0)!important;padding:8px;border-radius:4px}.nzoi-modal{position:fixed;z-index:10000;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,.8);display:flex;justify-content:center;align-items:center}.nzoi-modal-content{background:var(--bg1);width:80%;max-width:600px;border-radius:8px;border:1px solid var(--border);display:flex;flex-direction:column;max-height:80vh}.nzoi-modal-header{padding:15px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}.nzoi-modal-body{padding:15px;overflow-y:auto;flex:1}.nzoi-modal-footer{padding:15px;border-top:1px solid var(--border);display:flex;justify-content:flex-end;gap:10px}.nzoi-file-item{padding:10px;border:1px solid var(--border);margin-bottom:5px;border-radius:4px;background:var(--bg2);display:flex;justify-content:space-between;align-items:center}.nzoi-file-editor{width:100%;height:300px;background:var(--bg0);color:var(--fg0);border:1px solid var(--border);padding:10px;font-family:monospace}.nzoi-btn{border:none;padding:6px 12px;border-radius:4px;cursor:pointer;font-size:13px}.nzoi-btn-primary{background:var(--accent);color:#fff}.nzoi-btn-secondary{background:var(--bg2);color:var(--fg0);border:1px solid var(--border)}.nzoi-btn-danger{background:var(--red);color:#fff}.nzoi-btn-small{padding:4px 8px;font-size:12px}.nzoi-file-info{flex:1}.nzoi-file-name{font-weight:bold;margin-bottom:2px}.nzoi-file-meta{font-size:11px;color:var(--fg-muted)}.nzoi-file-actions{display:flex;gap:5px}.nzoi-modal-close{background:none;border:none;color:var(--fg-muted);font-size:24px;cursor:pointer;padding:0;width:24px;height:24px}.nzoi-empty-state{color:var(--fg-muted);text-align:center;padding:20px}::-webkit-scrollbar{width:10px;height:10px}::-webkit-scrollbar-track{background:var(--bg0)}::-webkit-scrollbar-thumb{background:var(--bg2);border-radius:6px;border:2px solid var(--bg0)}::-webkit-scrollbar-thumb:hover{background:var(--border-light)}`);
 
 await(async()=>{if(window.crossOriginIsolated)return true;if(!('serviceWorker'in navigator))return false;const reg=await navigator.serviceWorker.getRegistration();if(reg)return true;const sw=`self.addEventListener('install',()=>self.skipWaiting());self.addEventListener('activate',e=>e.waitUntil(self.clients.claim()));self.addEventListener('fetch',e=>{e.respondWith(fetch(e.request).then(r=>{const h=new Headers(r.headers);h.set('Cross-Origin-Embedder-Policy','credentialless');h.set('Cross-Origin-Opener-Policy','same-origin');return new Response(r.body,{status:r.status,statusText:r.statusText,headers:h})}).catch(()=>fetch(e.request)))});`;try{await navigator.serviceWorker.register(URL.createObjectURL(new Blob([sw],{type:'application/javascript'})));window.location.reload()}catch{return false}})();
 
@@ -43,6 +52,7 @@ const esc=t=>(t||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&g
 
         // Exclude images from train.nzoi.org.nz/assets/
         if(img.src.includes("train.nzoi.org.nz/assets/")) return;
+        if(img.src.includes("https://train.nzoi.org.nz/uploads/user/avatar/")) return;
 
         img.dataset.hc = 1;
         img.style.filter = "invert(1) contrast(200%) brightness(120%)";
@@ -73,25 +83,22 @@ let __rt_running=false;
 async function runTests(ed){
     if(__rt_running) return;
     __rt_running=true;
-
     const c=ed.getValue();
     const r=document.getElementById('test-results');
     r.innerHTML='<div style="padding:10px;color:var(--accent);">Compiling & Running...</div>';
-
     const results=[];
     for(const s of samples){
         try{
-            const res=await fetch('https://emkc.org/api/v2/piston/execute',{
+            const res=await fetch('https://ce.judge0.com/submissions?base64_encoded=true&wait=true',{
                 method:'POST',
                 headers:{'Content-Type':'application/json'},
-                body:JSON.stringify({language:'c++',version:'10.2.0',files:[{content:c}],stdin:s.input.trim()})
+                body:JSON.stringify({source_code:btoa(c),language_id:54,stdin:btoa(s.input.trim())})
             }).then(r=>r.json());
-
             const out=(
-                res.run ? (res.run.stdout||'')+(res.run.stderr||'')
-                : (res.compile ? res.compile.output : 'Error')
+                res.stderr ? atob(res.stderr)
+                : res.stdout ? atob(res.stdout)
+                : (res.compile_output ? atob(res.compile_output) : 'Error')
             ).trim();
-
             const exp=s.output.trim();
             const pass=out===exp;
             results.push({s,pass,out,exp,error:null});
@@ -99,7 +106,6 @@ async function runTests(ed){
             results.push({s,error:e.message});
         }
     }
-
     r.innerHTML='';
     results.forEach(({s,pass,out,exp,error})=>{
         const div=document.createElement('div');
@@ -111,10 +117,8 @@ async function runTests(ed){
         }
         r.appendChild(div);
     });
-
     __rt_running=false;
 }
-
 
 function submit(){const c=code.trim();if(!c)return alert('Code empty');const form=document.createElement('form');form.method='POST';form.action=`/problems/${pid}/submit`;form.style.display='none';const token=document.querySelector('meta[name="csrf-token"]')?.content;const params={utf8:'✓',authenticity_token:token,'submission[language_id]':11,'submission[source]':c,commit:'提交'};for(const k in params){const i=document.createElement('input');i.type='hidden';i.name=k;i.value=params[k];form.appendChild(i)}document.body.appendChild(form);form.submit()}
 init();
